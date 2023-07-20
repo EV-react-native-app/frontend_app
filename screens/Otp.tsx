@@ -1,8 +1,9 @@
 import React from 'react'
 import { View, SafeAreaView,  TouchableWithoutFeedback, Keyboard,Image,useWindowDimensions, StyleSheet, Text, Touchable, TouchableOpacity } from 'react-native'
 import Button from '../components/button';
-import Textfield from '../components/textfield';
-import { backgroundColor, fadedColor, logoFirstColor, textfieldBackgroundColor } from '../config';
+import { backgroundColor, buttonColor, fadedColor, logoFirstColor, textfieldBackgroundColor } from '../config';
+import OtpInputs from 'react-native-otp-inputs';
+
 const styles = StyleSheet.create({
     container:{
       display:'flex',
@@ -42,15 +43,31 @@ const styles = StyleSheet.create({
     textfiledContainer :{
         display:'flex',
         flexDirection:'row',
-        alignItems:'flex-start',
-        width:'100%',
         marginTop:12,
+        width:300,
+        height:54
     },
-    countryCodeContainer:{
-        backgroundColor: textfieldBackgroundColor,
+    otpContainer :{
+        display:'flex',
+        flexDirection:'row',
+        justifyContent:'center',
+        alignItems:'center',
+        backgroundColor: fadedColor,
         borderRadius:10,
-        padding:16,
-        marginRight:8
+        width:60,
+        gap:10,
+    },
+    textStyle2:{
+        fontFamily:'DMSans-Medium',
+        color: buttonColor,
+        fontSize: 14,
+        fontWeight:'700'
+    },
+    otpText:{
+        fontFamily: 'DMSans-Regular',
+        fontSize:15,
+        fontWeight:'700',
+        color:'white',
     },
     buttonContainer:{
         display:'flex',
@@ -60,7 +77,7 @@ const styles = StyleSheet.create({
     
   });
   
-const PhoneNumber:React.FC = () => {
+const Otp:React.FC = () => {
     const {height} = useWindowDimensions();
     const logoStyle = { height: height* 0.1, marginBottom:12 };
     const upperSpace = {marginTop: height* 0.1 };
@@ -68,33 +85,39 @@ const PhoneNumber:React.FC = () => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <SafeAreaView style={styles.container}>
-      <View style={[styles.upperContainer, upperSpace]}>
-        <Image 
-          source={require('../images/logo.png')}
-          style={logoStyle}
-          resizeMode="contain"
-        />
-        <Text style={styles.logoText1}>Cell
-            <Text style={styles.logoText2}>Doc</Text>
-        </Text>
-        <View style={[styles.entryContainer,space]}>
-            <Text style={styles.textStyle}>Mobile No</Text>
+        <View style={[styles.upperContainer, upperSpace]}>
+            <Image 
+            source={require('../images/logo.png')}
+            style={logoStyle}
+            resizeMode="contain"
+            />
+            <Text style={styles.logoText1}>Cell
+                <Text style={styles.logoText2}>Doc</Text>
+            </Text>
+            <View style={[styles.entryContainer,space]}>
+                <Text style={styles.textStyle}>OTP send to +91 9876543217</Text>
 
-            <View style={styles.textfiledContainer}>
-                <View style={styles.countryCodeContainer}>
-                    <Text style={styles.textStyle}>+91</Text>
-                </View>
-                <Textfield placeholder='9876543210' maxLength={10} keyboardType='numeric' inputMode='numeric'/>  
+                <View style={styles.textfiledContainer}>
+                <OtpInputs
+                    handleChange={(code) => console.log(code)}
+                    numberOfInputs={4} autofillFromClipboard={false}
+                    inputContainerStyles={styles.otpContainer} 
+                    inputStyles={styles.otpText} 
+                    keyboardType='phone-pad'
+                    inputMode='numeric'
+                />
+                
+
             </View>
         </View>
-        
+        <Text style={[styles.textStyle2, space]}>Resend OTP</Text>
       </View>
       <View style={styles.buttonContainer}>
-            <Button text='Continue'/>
+            <Button text='Verify'/>
         </View>
     </SafeAreaView>
     </TouchableWithoutFeedback>
   )
 }
 
-export default PhoneNumber
+export default Otp

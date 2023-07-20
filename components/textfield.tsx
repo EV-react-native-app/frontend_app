@@ -5,9 +5,9 @@ type TextfieldProps = PropsWithChildren<{
     maxLength? : number;
     inputMode? : InputModeOptions;
     keyboardType? : KeyboardTypeOptions;
-
+    placeholder?: string;
 }>;
-const Textfield= ({children,maxLength=1000,inputMode='text',keyboardType='default'} : PropsWithChildren<TextfieldProps>) => {
+const Textfield= ({children,maxLength=1000,inputMode='text',keyboardType='default',placeholder} : PropsWithChildren<TextfieldProps>) => {
     
     const styles = {
         textfield: {
@@ -24,7 +24,7 @@ const Textfield= ({children,maxLength=1000,inputMode='text',keyboardType='defaul
 
     return (
     <TextInput
-        placeholder='9876543210'
+        placeholder={placeholder}
         placeholderTextColor={fadedColor}
         maxLength={maxLength}
         inputMode={inputMode}

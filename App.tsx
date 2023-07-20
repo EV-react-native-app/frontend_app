@@ -13,6 +13,8 @@ import {
 import Textfield from './components/textfield';
 import { backgroundColor } from './config';
 import PhoneNumber from './screens/PhoneNumber';
+import Otp from './screens/Otp';
+import PersonalDetails from './screens/PersonalDetails';
 type SectionProps = PropsWithChildren<{
   title: string;
 }>;
@@ -48,7 +50,7 @@ function App(): JSX.Element {
   const logoStyle = { height: height* 0.1 };
   const upperSpace = {marginTop: height* 0.1 };
   return (
-    <PhoneNumber/>
+    <PersonalDetails/>
   );
 }
 

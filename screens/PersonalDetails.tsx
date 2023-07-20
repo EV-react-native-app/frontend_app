@@ -1,9 +1,12 @@
-import React from 'react'
-import { View, SafeAreaView,  TouchableWithoutFeedback, Keyboard,Image,useWindowDimensions, StyleSheet, Text, Touchable, TouchableOpacity } from 'react-native'
+import React,{useState} from 'react'
+import { View, SafeAreaView, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard,Image,useWindowDimensions, StyleSheet, Text, Touchable, TouchableOpacity, ScrollView } from 'react-native'
 import Button from '../components/button';
 import Textfield from '../components/textfield';
 import { backgroundColor, fadedColor, logoFirstColor, textfieldBackgroundColor } from '../config';
 const styles = StyleSheet.create({
+    Keyboard:{
+        flex:1
+    },
     container:{
       display:'flex',
       flex: 1,
@@ -46,12 +49,7 @@ const styles = StyleSheet.create({
         width:'100%',
         marginTop:12,
     },
-    countryCodeContainer:{
-        backgroundColor: textfieldBackgroundColor,
-        borderRadius:10,
-        padding:16,
-        marginRight:8
-    },
+    
     buttonContainer:{
         display:'flex',
         flex: 1,
@@ -60,15 +58,32 @@ const styles = StyleSheet.create({
     
   });
   
-const PhoneNumber:React.FC = () => {
+const PersonalDetails:React.FC = () => {
     const {height} = useWindowDimensions();
     const logoStyle = { height: height* 0.1, marginBottom:12 };
     const upperSpace = {marginTop: height* 0.1 };
+
     const space = {marginTop: height* 0.05 };
+    const [intialStyle, setInitalStyle] = useState([styles.upperContainer,upperSpace]);
+    const keyboardShowListener = Keyboard.addListener(
+        'keyboardDidShow',
+        () => {
+            setInitalStyle([styles.upperContainer]);
+        }
+    );
+    const keyboardHideListener = Keyboard.addListener(
+        'keyboardDidHide',
+        () => {
+            setInitalStyle([styles.upperContainer,upperSpace]);
+        }
+    );
+  
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+  
+     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <SafeAreaView style={styles.container}>
-      <View style={[styles.upperContainer, upperSpace]}>
+      
+      <View style={intialStyle}>
         <Image 
           source={require('../images/logo.png')}
           style={logoStyle}
@@ -78,17 +93,23 @@ const PhoneNumber:React.FC = () => {
             <Text style={styles.logoText2}>Doc</Text>
         </Text>
         <View style={[styles.entryContainer,space]}>
-            <Text style={styles.textStyle}>Mobile No</Text>
+            <Text style={styles.textStyle}>Name</Text>
 
             <View style={styles.textfiledContainer}>
-                <View style={styles.countryCodeContainer}>
-                    <Text style={styles.textStyle}>+91</Text>
-                </View>
-                <Textfield placeholder='9876543210' maxLength={10} keyboardType='numeric' inputMode='numeric'/>  
+                
+                <Textfield placeholder='name' keyboardType='default' inputMode='text'/>  
+            </View>
+            <Text style={[styles.textStyle,{ marginTop:16 }]}>Email (optional)</Text>
+
+            <View style={styles.textfiledContainer}>
+                
+                <Textfield placeholder='email' keyboardType='email-address' inputMode='email'/>
             </View>
         </View>
         
       </View>
+      
+    
       <View style={styles.buttonContainer}>
             <Button text='Continue'/>
         </View>
@@ -97,4 +118,4 @@ const PhoneNumber:React.FC = () => {
   )
 }
 
-export default PhoneNumber
+export default PersonalDetails
