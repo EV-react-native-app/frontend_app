@@ -1,8 +1,9 @@
 import React,{PropsWithChildren} from 'react'
-import { TouchableOpacity, Text,StyleSheet } from 'react-native'
+import { TouchableOpacity, Text,StyleSheet, GestureResponderEvent } from 'react-native'
 import { buttonColor } from '../config';
 type ButtonProps = PropsWithChildren<{
     text? : string;
+    onPress? :((event: GestureResponderEvent) => void) | undefined;
 }>;
 const styles = StyleSheet.create({
     button:{
@@ -22,9 +23,9 @@ const styles = StyleSheet.create({
         fontWeight:'700'
     }
 });
-const Button = ({children,text} : PropsWithChildren<ButtonProps>)=> {
+const Button = ({children,text,onPress} : PropsWithChildren<ButtonProps>)=> {
   return (
-    <TouchableOpacity style={styles.button}>
+    <TouchableOpacity style={styles.button} onPress={onPress}>
                 <Text style={styles.textStyle2}>{text}</Text>
             </TouchableOpacity>
   )

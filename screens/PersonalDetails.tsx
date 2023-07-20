@@ -3,6 +3,8 @@ import { View, SafeAreaView, KeyboardAvoidingView, TouchableWithoutFeedback, Key
 import Button from '../components/button';
 import Textfield from '../components/textfield';
 import { backgroundColor, fadedColor, logoFirstColor, textfieldBackgroundColor } from '../config';
+import { useRoute } from '@react-navigation/native';
+
 const styles = StyleSheet.create({
     Keyboard:{
         flex:1
@@ -57,14 +59,19 @@ const styles = StyleSheet.create({
     },
     
   });
-  
+type Param = {
+    phoneNumber? : string;
+}
 const PersonalDetails:React.FC = () => {
     const {height} = useWindowDimensions();
     const logoStyle = { height: height* 0.1, marginBottom:12 };
     const upperSpace = {marginTop: height* 0.1 };
-
+    const route = useRoute();
+    const data: Param = route.params as Param;
     const space = {marginTop: height* 0.05 };
     const [intialStyle, setInitalStyle] = useState([styles.upperContainer,upperSpace]);
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
     const keyboardShowListener = Keyboard.addListener(
         'keyboardDidShow',
         () => {
@@ -97,13 +104,13 @@ const PersonalDetails:React.FC = () => {
 
             <View style={styles.textfiledContainer}>
                 
-                <Textfield placeholder='name' keyboardType='default' inputMode='text'/>  
+                <Textfield placeholder='name' keyboardType='default' inputMode='text' onChange={(item)=> setName(item)}/>  
             </View>
             <Text style={[styles.textStyle,{ marginTop:16 }]}>Email (optional)</Text>
 
             <View style={styles.textfiledContainer}>
                 
-                <Textfield placeholder='email' keyboardType='email-address' inputMode='email'/>
+                <Textfield placeholder='email' keyboardType='email-address' inputMode='email' onChange={(item)=> setEmail(item)}/>
             </View>
         </View>
         
@@ -111,7 +118,16 @@ const PersonalDetails:React.FC = () => {
       
     
       <View style={styles.buttonContainer}>
-            <Button text='Continue'/>
+            <Button text='Continue' onPress={()=>{
+                const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+                if(name!=''){
+                    if(emailRegex.test(email)||email==''){
+                        console.log(name);
+                        console.log(data.phoneNumber);
+                        console.log(email);
+                    }
+                }
+            }}/>
         </View>
     </SafeAreaView>
     </TouchableWithoutFeedback>

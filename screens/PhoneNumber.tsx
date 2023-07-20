@@ -1,8 +1,10 @@
-import React from 'react'
-import { View, SafeAreaView,  TouchableWithoutFeedback, Keyboard,Image,useWindowDimensions, StyleSheet, Text, Touchable, TouchableOpacity } from 'react-native'
+import React,{useState} from 'react'
+import { View, SafeAreaView,  TouchableWithoutFeedback, Keyboard,Image,useWindowDimensions, StyleSheet, Text, Touchable, TouchableOpacity, Pressable } from 'react-native'
 import Button from '../components/button';
 import Textfield from '../components/textfield';
 import { backgroundColor, fadedColor, logoFirstColor, textfieldBackgroundColor } from '../config';
+import { useNavigation } from '@react-navigation/native';
+
 const styles = StyleSheet.create({
     container:{
       display:'flex',
@@ -65,6 +67,10 @@ const PhoneNumber:React.FC = () => {
     const logoStyle = { height: height* 0.1, marginBottom:12 };
     const upperSpace = {marginTop: height* 0.1 };
     const space = {marginTop: height* 0.05 };
+    const navigation = useNavigation();
+    const [phoneNumber, setPhoneNumber] = useState('');
+
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <SafeAreaView style={styles.container}>
@@ -84,13 +90,22 @@ const PhoneNumber:React.FC = () => {
                 <View style={styles.countryCodeContainer}>
                     <Text style={styles.textStyle}>+91</Text>
                 </View>
-                <Textfield placeholder='9876543210' maxLength={10} keyboardType='numeric' inputMode='numeric'/>  
+                <Textfield onChange={(item)=>{
+                  setPhoneNumber(item);
+                }} placeholder='9876543210' maxLength={10} keyboardType='numeric' inputMode='numeric'/>  
             </View>
         </View>
         
       </View>
+      
       <View style={styles.buttonContainer}>
-            <Button text='Continue'/>
+            <Button text='Continue' onPress={()=>{
+                if(phoneNumber.length == 10){
+                  navigation.navigate('Otp' as never,{
+                    phoneNumber:`+91 ${phoneNumber}`
+                  } as never);
+                }
+            }}/>
         </View>
     </SafeAreaView>
     </TouchableWithoutFeedback>

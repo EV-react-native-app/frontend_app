@@ -1,8 +1,10 @@
-import React from 'react'
+import React,{useState} from 'react'
 import { View, SafeAreaView,  TouchableWithoutFeedback, Keyboard,Image,useWindowDimensions, StyleSheet, Text, Touchable, TouchableOpacity } from 'react-native'
 import Button from '../components/button';
 import { backgroundColor, buttonColor, fadedColor, logoFirstColor, textfieldBackgroundColor } from '../config';
 import OtpInputs from 'react-native-otp-inputs';
+import { useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
     container:{
@@ -76,12 +78,18 @@ const styles = StyleSheet.create({
     },
     
   });
-  
+type Param = {
+    phoneNumber? : string;
+}
 const Otp:React.FC = () => {
     const {height} = useWindowDimensions();
     const logoStyle = { height: height* 0.1, marginBottom:12 };
     const upperSpace = {marginTop: height* 0.1 };
     const space = {marginTop: height* 0.05 };
+    const route = useRoute();
+    const data: Param = route.params as Param;
+    const navigation = useNavigation();
+    const [otp,setOtp] = useState('');
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <SafeAreaView style={styles.container}>
@@ -95,11 +103,11 @@ const Otp:React.FC = () => {
                 <Text style={styles.logoText2}>Doc</Text>
             </Text>
             <View style={[styles.entryContainer,space]}>
-                <Text style={styles.textStyle}>OTP send to +91 9876543217</Text>
+                <Text style={styles.textStyle}>OTP send to {data.phoneNumber as string}</Text>
 
                 <View style={styles.textfiledContainer}>
                 <OtpInputs
-                    handleChange={(code) => console.log(code)}
+                    handleChange={(code) => setOtp(code)}
                     numberOfInputs={4} autofillFromClipboard={false}
                     inputContainerStyles={styles.otpContainer} 
                     inputStyles={styles.otpText} 
@@ -113,7 +121,13 @@ const Otp:React.FC = () => {
         <Text style={[styles.textStyle2, space]}>Resend OTP</Text>
       </View>
       <View style={styles.buttonContainer}>
-            <Button text='Verify'/>
+            <Button text='Verify' onPress={()=>{
+               if(otp == '2663'){
+                navigation.navigate('PersonalDetails' as never,{
+                    phoneNumber:data.phoneNumber
+                } as never)
+               }
+            }}/>
         </View>
     </SafeAreaView>
     </TouchableWithoutFeedback>

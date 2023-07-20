@@ -1,13 +1,14 @@
 import React, { PropsWithChildren } from 'react'
-import { InputModeOptions, KeyboardTypeOptions, Text, TextInput } from 'react-native'
+import { InputModeOptions, KeyboardTypeOptions, NativeSyntheticEvent, Text, TextInput, TextInputChangeEventData } from 'react-native'
 import { backgroundColor, fadedColor, logoSecondColor, textfieldBackgroundColor } from '../config'
 type TextfieldProps = PropsWithChildren<{
     maxLength? : number;
     inputMode? : InputModeOptions;
     keyboardType? : KeyboardTypeOptions;
     placeholder?: string;
+    onChange? :((text: string) => void) | undefined
 }>;
-const Textfield= ({children,maxLength=1000,inputMode='text',keyboardType='default',placeholder} : PropsWithChildren<TextfieldProps>) => {
+const Textfield= ({children,maxLength=1000,inputMode='text',keyboardType='default',placeholder, onChange} : PropsWithChildren<TextfieldProps>) => {
     
     const styles = {
         textfield: {
@@ -24,6 +25,7 @@ const Textfield= ({children,maxLength=1000,inputMode='text',keyboardType='defaul
 
     return (
     <TextInput
+        onChangeText={onChange}
         placeholder={placeholder}
         placeholderTextColor={fadedColor}
         maxLength={maxLength}
