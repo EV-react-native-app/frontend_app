@@ -1,7 +1,7 @@
-import React,{useState} from 'react'
+import React,{useState, useEffect} from 'react'
 import { View, SafeAreaView,  TouchableWithoutFeedback, Keyboard,Image,useWindowDimensions, StyleSheet, Text, Touchable, TouchableOpacity } from 'react-native'
 import Button from '../components/button';
-import { backgroundColor, buttonColor, fadedColor, logoFirstColor, textfieldBackgroundColor } from '../config';
+import { backgroundColor, buttonColor, fadedColor, logoFirstColor, textfieldBackgroundColor, timerValue } from '../config';
 import OtpInputs from 'react-native-otp-inputs';
 import { useRoute } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
@@ -61,7 +61,6 @@ const styles = StyleSheet.create({
     },
     textStyle2:{
         fontFamily:'DMSans-Medium',
-        color: buttonColor,
         fontSize: 14,
         fontWeight:'700'
     },
@@ -90,6 +89,27 @@ const Otp:React.FC = () => {
     const data: Param = route.params as Param;
     const navigation = useNavigation();
     const [otp,setOtp] = useState('');
+    const [timer,setTimer] = useState(timerValue);
+    const [startTimer, setStartTimer] = useState(true);
+
+    
+
+   
+    useEffect(() => {
+        var counter = timer;
+        
+        var oneSecInterval = setInterval(() => {
+            counter--;
+            setTimer(counter);
+            if (counter == 0) {
+                setStartTimer(false);
+                setTimer(timerValue);
+                clearInterval(oneSecInterval);
+            }
+        }, 1000);
+    }, []);
+
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <SafeAreaView style={styles.container}>
@@ -118,7 +138,21 @@ const Otp:React.FC = () => {
 
             </View>
         </View>
-        <Text style={[styles.textStyle2, space]}>Resend OTP</Text>
+        <TouchableOpacity onPress={startTimer?()=>{}: ()=>{
+            setStartTimer(true);
+            var counter = timer;
+            var oneSecInterval = setInterval(() => {
+                counter--;
+                setTimer(counter);
+                if (counter == 0) {
+                    setStartTimer(false);
+                    setTimer(timerValue);
+                    clearInterval(oneSecInterval);
+                }
+            }, 1000);
+        }}>
+            <Text style={[styles.textStyle2, space,{  color: startTimer?fadedColor: buttonColor, }]}>Resend OTP   {startTimer?timer:''}</Text>
+        </TouchableOpacity>
       </View>
       <View style={styles.buttonContainer}>
             <Button text='Verify' onPress={()=>{

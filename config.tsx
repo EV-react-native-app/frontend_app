@@ -5,3 +5,8 @@ export const logoFirstColor = '#51A067';
 export const logoSecondColor = '#CFCFCF';
 export const fadedColor = '#575758';
 export const buttonColor = '#51A067';
+
+
+
+//Constants
+export const timerValue = 10;
