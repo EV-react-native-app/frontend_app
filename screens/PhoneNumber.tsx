@@ -1,7 +1,8 @@
 import React from 'react'
 import { View, SafeAreaView,  TouchableWithoutFeedback, Keyboard,Image,useWindowDimensions, StyleSheet, Text, Touchable, TouchableOpacity } from 'react-native'
+import Button from '../components/button';
 import Textfield from '../components/textfield';
-import { backgroundColor, buttonColor, fadedColor, logoFirstColor, textfieldBackgroundColor } from '../config';
+import { backgroundColor, fadedColor, logoFirstColor, textfieldBackgroundColor } from '../config';
 const styles = StyleSheet.create({
     container:{
       display:'flex',
@@ -56,22 +57,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'flex-end',
     },
-    button:{
-        display:'flex',
-        flexDirection:'row',
-        justifyContent:'center',
-        padding:16,
-        width:'100%',
-        backgroundColor: buttonColor,
-        borderRadius:10,
-        marginTop:'auto'
-    },
-    textStyle2:{
-        fontFamily:'DMSans-Medium',
-        color: 'white',
-        fontSize: 18,
-        fontWeight:'700'
-    },
+    
   });
   
 const PhoneNumber:React.FC = () => {
@@ -104,9 +90,7 @@ const PhoneNumber:React.FC = () => {
         
       </View>
       <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.button}>
-                <Text style={styles.textStyle2}>Continue</Text>
-            </TouchableOpacity>
+            <Button text='Continue'/>
         </View>
     </SafeAreaView>
     </TouchableWithoutFeedback>
